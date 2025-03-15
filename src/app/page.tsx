@@ -39,7 +39,14 @@ export default function Home() {
       backgroundAttachment: 'fixed',
     }}
     >
-      <h1 className="text-3xl font-bold mb-6 text-center">Stoic Quote Library</h1>
+      <div className="flex justify-center items-center mb-6 bg-black p-4 size-fit rounded mx-auto ">
+        <img 
+          src="/sq_logo.png" 
+          alt="Stoic Quote Logo" 
+          className="w-20 h-20 mr-3" 
+        />
+        <h1 className="text-3xl font-bold text-center">Stoic Quote Library</h1>
+      </div>      
       <div className="flex justify-center mb-6">
         <input
           type="text"
@@ -77,7 +84,7 @@ export default function Home() {
         ))}
       </div>
       <footer className="mt-8 text-center ">
-        <div className="bg-gray-800/75 text-gray-200 text-sm w-90 mx-auto p-4 rounded">
+        <div className="bg-gray-800/75 text-gray-200 text-sm size-fit mx-auto p-4 rounded">
           Built by Michael Lawrence | Codemic Solutions | <a
             href="https://x.com/michael_c_law"
             target="_blank"
