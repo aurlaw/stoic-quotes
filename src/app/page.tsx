@@ -7,6 +7,7 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showFavorites, setShowFavorites] = useState<boolean>(false);
   const [favorites, setFavorites] = useState<string[]>([]); // Default to empty array
+  const [tagFilter, setTagFilter] = useState<string>(''); // New state for tag filter
 
   // Load favorites from localStorage only on client-side
   useEffect(() => {
@@ -16,10 +17,13 @@ export default function Home() {
     }
   }, []); // Runs once on mount, client-side only
 
+  const allTags = Array.from(new Set(quotes.flatMap((q: Quote) => q.tags))).sort();
+
   const filteredQuotes: Quote[] = quotes.filter((q: Quote) =>
-    q.text.toLowerCase().includes(searchTerm.toLowerCase())
+    (q.text.toLowerCase().includes(searchTerm.toLowerCase()) || q.author.toLowerCase().includes(searchTerm.toLowerCase())) &&
+    (tagFilter ? q.tags.includes(tagFilter) : true)
   );
-  const displayQuotes: Quote[] = showFavorites
+    const displayQuotes: Quote[] = showFavorites
     ? filteredQuotes.filter((q: Quote) => favorites.includes(q.text))
     : filteredQuotes;
 
@@ -33,10 +37,9 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8 md bg-desktop bg-mobile"
     style={{
-      backgroundSize: 'cover',
+      backgroundSize: 'contain',
       backgroundPosition: 'top center',
-      backgroundRepeat: 'no-repeat',
-      backgroundAttachment: 'fixed',
+      backgroundRepeat: 'no-repeat'
     }}
     >
       <div className="flex justify-center items-center mb-6 bg-black p-4 size-fit rounded mx-auto ">
@@ -47,17 +50,27 @@ export default function Home() {
         />
         <h1 className="text-3xl font-bold text-center">Stoic Quote Library</h1>
       </div>      
-      <div className="flex justify-center mb-6">
-        <input
+      <div className="flex flex-col md:flex-row flex justify-center mb-6 space-x-4 gap-4">
+      <input
           type="text"
           placeholder="Search quotes..."
           value={searchTerm}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
-          className="w-full max-w-md mx-auto p-2 mb-6 rounded bg-gray-800 border border-gray-700 focus:outline-none"
+          className="w-full md:w-fit p-2  rounded bg-gray-800 border border-gray-700 focus:outline-none"
         />
 
-      </div>
-      <div className="text-center mb-6">
+        <select
+          value={tagFilter}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setTagFilter(e.target.value)}
+          className="w-full md:w-fit p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none"
+        >
+          <option value="">All Tags</option>
+          {allTags.map((tag: string) => (
+            <option key={tag} value={tag}>
+              {tag.charAt(0).toUpperCase() + tag.slice(1)}
+            </option>
+          ))}
+        </select>
         <button
           onClick={() => setShowFavorites(!showFavorites)}
           className="px-4 py-2 text-white cursor-pointor text-base font-bold
@@ -66,6 +79,8 @@ export default function Home() {
         >
           {showFavorites ? 'Show All' : 'Show Favorites'}
         </button>
+      </div>      
+      <div className="text-center mb-10">
       </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto">
         {displayQuotes.map((quote: Quote, i: number) => (

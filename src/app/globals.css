@@ -32,5 +32,7 @@ body {
 @media (min-width: 768px) {
   .bg-desktop {
     background-image: url('/aurlaw_a_snow_blizzard_in_ancient_rome.jpg');
+    background-size: cover !important;
+    background-attachment: fixed;
   }
 }
