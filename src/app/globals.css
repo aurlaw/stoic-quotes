@@ -24,3 +24,13 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.bg-mobile {
+  background-image: url('/aurlaw_a_snow_blizzard_in_ancient_rome_mobile.jpg');
+}
+
+@media (min-width: 768px) {
+  .bg-desktop {
+    background-image: url('/aurlaw_a_snow_blizzard_in_ancient_rome.jpg');
+  }
+}
